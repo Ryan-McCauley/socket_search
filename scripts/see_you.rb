@@ -1,11 +1,11 @@
 require 'socket'
-require 'awesome_print'
+require 'json'
 require 'net/http'
 require 'nmap/command'
 require 'nmap/xml'
 
 local_ip = Socket.ip_address_list.detect { |intf| intf.ipv4_private? }
-ap "Your local IP is: #{local_ip.ip_address if local_ip}"
+puts "Your local IP is: #{local_ip.ip_address if local_ip}"
 
 def get_public_ip
   uri = URI('http://api.ipify.org')
@@ -13,36 +13,38 @@ def get_public_ip
   response.strip
 end
 
-ap "Your public IP is: #{get_public_ip}"
-ap '..................................................................'
-ap '..................................................................'
-ap '..................................................................'
-ap 'scan ports?'
+puts "Your public IP is: #{get_public_ip}"
+puts '..................................................................'
 
 def scan_network(targets)
-  ap "target: #{targets}"
+  puts "target: #{targets}"
   Nmap::Command.run do |nmap|
     nmap.connect_scan = true
     nmap.service_scan   = true
     nmap.output_xml     = 'scan.xml'
     nmap.verbose        = true
-    nmap.ports   = [20, 21, 22, 23, 25, 80, 110, 443, 512, 522, 8080, 1080]
+    nmap.ports   = [20, 21, 22, 23, 25, 53, 69, 139, 137, 445, 80, 110, 443, 512, 522, 8080, 1080, 8443]
     nmap.targets = targets.to_s
   end
 end
 
 def display_results
-  Nmap::XML.new('scan_results.xml') do |xml|
+  results = {}
+  Nmap::XML.new('scan.xml') do |xml|
     xml.each_host do |host|
-      puts "IP: #{host.ip}"
-      host.each_port do |port|
-        puts "  Port: #{port.number} (#{port.protocol}) - #{port.state}"
+      results[host.ip] = host.ports.map do |port|
+        { 'Port' => port.number, 'Protocol' => port.protocol, 'State' => port.state }
       end
     end
   end
+
+  File.open('results.json', 'w') do |f|
+    f.write(results.to_json)
+  end
+
+  puts 'Results saved to results.json'
 end
 
-# Ask the operator for confirmation
 puts 'This script will scan the range of IP addresses. Do you want to proceed? (network/public/no)'
 answer = gets.chomp.downcase
 
@@ -53,12 +55,11 @@ if answer == 'network'
   puts 'Scan completed. Displaying results:'
   display_results
 elsif answer == 'public'
-  puts 'Scan operation cancelled by user.'
   puts 'Starting the scan...'
   targets = get_public_ip
   scan_network(targets)
   puts 'Scan completed. Displaying results:'
   display_results
 else
-  'Exiting...'
+  puts 'Exiting...'
 end

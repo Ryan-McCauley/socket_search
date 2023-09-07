@@ -1,0 +1,56 @@
+body {
+    background-color: #222;
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropdown-content {
+    display: none;
+    background-color: #333;
+    margin-top: 10px;
+    border: 1px solid #0ff;
+    width: 90%;
+    max-width: 600px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.dropdown-content p.open-port {
+    background-color: #f00;  /* Open ports background */
+    color: #fff;             /* Text color for better visibility */
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.dropdown-content p.filtered-port {
+    background-color: #ffa500;  /* Filtered ports background */
+    color: #000;                /* Text color for better visibility */
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.dropdown-btn {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.dropdown-btn.open-host {
+    color: #f00;  /* Host with open ports */
+}
+
+.dropdown-btn.filtered-host {
+    color: #ffa500;  /* Host with filtered ports */
+}
+
+h1 {
+    text-align: center;
+}
