@@ -45,21 +45,28 @@ def display_results
   puts 'Results saved to results.json'
 end
 
-puts 'This script will scan the range of IP addresses. Do you want to proceed? (network/public/no)'
+puts 'This script will scan the range of IP addresses. Do you want to proceed? ((n)etwork/(p)ublic/(c)ustom/(e)scape)'
 answer = gets.chomp.downcase
 
-if answer == 'network'
+if answer == 'network' || answer == 'n'
   puts 'Starting the scan...'
   targets = '192.168.1.*'
   scan_network(targets)
   puts 'Scan completed. Displaying results:'
-  display_results
-elsif answer == 'public'
+  analyze_results
+elsif answer == 'public' || answer == 'p'
   puts 'Starting the scan...'
   targets = get_public_ip
   scan_network(targets)
   puts 'Scan completed. Displaying results:'
-  display_results
+  analyze_results
+elsif answer == 'custom' || answer == 'c'
 else
   puts 'Exiting...'
+end
+
+# runs inpect script
+def analyze_results
+  display_results
+  system('ruby', './scripts/inspect.rb')
 end
