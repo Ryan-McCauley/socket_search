@@ -1,6 +1,6 @@
 body {
     background-color: #222;
-    color: #0ff;
+    color: chartreuse;
     font-family: 'Courier New', monospace;
     padding: 20px;
     display: flex;
@@ -12,7 +12,7 @@ body {
     display: none;
     background-color: #333;
     margin-top: 10px;
-    border: 1px solid #0ff;
+    border: 1px solid chartreuse;
     width: 90%;
     max-width: 600px;
     padding: 10px;

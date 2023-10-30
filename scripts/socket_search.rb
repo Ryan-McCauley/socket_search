@@ -45,7 +45,7 @@ def display_results
   puts 'Results saved to results.json'
 end
 
-puts 'This script will scan the range of IP addresses. Do you want to proceed? ((n)etwork/(p)ublic/(c)ustom/(e)scape)'
+puts 'This script will scan the range of IP addresses. Do you want to proceed? ((n)etwork/(p)ublic/(e)scape)'
 answer = gets.chomp.downcase
 
 if answer == 'network' || answer == 'n'

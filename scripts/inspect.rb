@@ -21,7 +21,7 @@ def parse_xml_to_html
         }
       }
       html.body {
-        html.h1 "Nmap Scan Results"
+        html.h1 "Socket_Search Results"
         
         closed_hosts = []
 
